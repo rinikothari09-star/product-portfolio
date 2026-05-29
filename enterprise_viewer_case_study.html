@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Viewer — Rini Kothari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #faf9f7;
+    --muted: #6b6860;
+    --rule: #e2e0db;
+    --accent: #2a52be;
+    --accent-soft: #eef1fa;
+    --warm: #f4f2ee;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  
+
+  /* LAYOUT */
+  .page { max-width: 720px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 4rem 0 5rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .cover-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 3rem;
+  }
+  .cover-label span { color: var(--accent); }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .cover-title em { font-style: italic; font-weight: 400; }
+  .cover-sub {
+    font-size: 1rem; color: var(--muted);
+    max-width: 520px; line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+  .cover-meta {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    border-top: 1px solid var(--rule); padding-top: 2rem;
+  }
+  .cover-meta-item label {
+    display: block; font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .cover-meta-item span { font-size: 0.9rem; font-weight: 500; }
+
+  /* SCROLL CUE */
+  .scroll-cue {
+    position: absolute; bottom: 2rem; right: 0;
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); font-family: 'DM Mono', monospace;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .scroll-cue::before {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: var(--rule); transform-origin: top;
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.4);opacity:0.4} }
+
+  /* SECTIONS */
+  .section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .section:last-child { border-bottom: none; }
+
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.15em; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+  }
+  .section-heading em { font-style: italic; font-weight: 400; }
+
+  .section-intro {
+    font-size: 1rem; color: var(--muted);
+    max-width: 560px; margin-bottom: 2.5rem;
+    border-left: 2px solid var(--accent); padding-left: 1.25rem;
+  }
+
+  /* PROBLEM CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 2.5rem;
+  }
+  .card {
+    background: var(--paper);
+    padding: 1.5rem;
+  }
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 0.75rem;
+    display: block;
+  }
+  .card p { font-size: 0.88rem; line-height: 1.55; color: var(--ink); }
+
+  /* HIGHLIGHT CARD */
+  .highlight-card {
+    background: var(--ink); color: var(--paper);
+    padding: 2.5rem; margin: 2.5rem 0;
+    position: relative; overflow: hidden;
+  }
+  .highlight-card::before {
+    content: '\201C';
+    position: absolute; top: -1rem; left: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem; color: rgba(255,255,255,0.06);
+    line-height: 1; pointer-events: none;
+  }
+  .highlight-card p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-style: italic; font-weight: 400;
+    line-height: 1.5; position: relative;
+  }
+  .highlight-card cite {
+    display: block; margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(250,249,247,0.45);
+    font-style: normal;
+  }
+
+  /* APPROACH STEPS */
+  .steps { margin-top: 2.5rem; }
+  .step {
+    display: grid; grid-template-columns: 3rem 1fr;
+    gap: 1.5rem; padding: 1.75rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+  .step:last-child { border-bottom: 1px solid var(--rule); }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; color: var(--muted);
+    padding-top: 0.2rem;
+  }
+  .step-content h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .step-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* STORYVIEW FEATURE CALLOUT */
+  .feature-box {
+    border: 1px solid var(--accent);
+    padding: 2.5rem;
+    margin: 3rem 0;
+    position: relative;
+  }
+  .feature-box-label {
+    position: absolute; top: -0.6rem; left: 1.5rem;
+    background: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    padding: 0 0.5rem;
+  }
+  .feature-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700;
+    margin-bottom: 1rem; letter-spacing: -0.02em;
+  }
+  .feature-box p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.75rem; }
+  .feature-box p:last-child { margin-bottom: 0; }
+
+  /* METRICS */
+  .metrics-hero {
+    margin: 3rem 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+  }
+  .metric-block {
+    background: var(--paper);
+    padding: 2.5rem 2rem;
+  }
+  .metric-block.accent-bg {
+    background: var(--ink); color: var(--paper);
+  }
+  .metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 0.5rem; display: block;
+  }
+  .metric-block.accent-bg .metric-label { color: rgba(250,249,247,0.45); }
+  .metric-value {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .metric-sub {
+    font-size: 0.8rem; color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .metric-block.accent-bg .metric-sub { color: rgba(250,249,247,0.5); }
+
+  .metrics-secondary {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); border-top: none;
+  }
+  .metric-sm {
+    background: var(--warm); padding: 1.5rem;
+  }
+  .metric-sm .metric-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+  .metric-sm .metric-value { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; }
+
+  /* DECISIONS */
+  .decision {
+    margin: 1.5rem 0; padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .decision:last-child { border-bottom: 1px solid var(--rule); }
+  .decision-q {
+    font-size: 0.78rem; font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .decision h4 { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .decision p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+  /* PRINCIPLES */
+  .principles { margin-top: 2rem; }
+  .principle {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 1.25rem 0; border-top: 1px solid var(--rule);
+  }
+  .principle:last-child { border-bottom: 1px solid var(--rule); }
+  .principle-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 1px solid var(--rule); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: var(--accent);
+    font-family: 'DM Mono', monospace; font-weight: 500;
+  }
+  .principle h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .principle p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* REFLECTION */
+  .reflection-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2rem; margin-top: 2.5rem;
+  }
+  .reflection-item h4 {
+    font-size: 0.75rem; font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .reflection-item p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 5rem 0 3rem;
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .cta-section p { font-size: 0.9rem; color: var(--muted); margin-bottom: 2rem; }
+  .cta-link {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    border: 1px solid var(--ink); padding: 0.9rem 2rem;
+    transition: all 0.2s;
+  }
+  .cta-link:hover { background: var(--ink); color: var(--paper); }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 0;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .footer-links {
+    display: flex; gap: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px; background: var(--accent);
+    width: 0%; z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* NAVIGATION */
+  .nav {
+    position: fixed; top: 1.5rem; right: 2rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+    z-index: 50;
+  }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--rule); cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .nav-dot.active { background: var(--accent); transform: scale(1.5); }
+  .nav-dot:hover { background: var(--muted); }
+
+  @media (max-width: 600px) {
+    .metrics-hero { grid-template-columns: 1fr; }
+    .metrics-secondary { grid-template-columns: 1fr 1fr; }
+    .reflection-grid { grid-template-columns: 1fr; }
+    .nav { display: none; }
+    .cover-meta { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- NAV DOTS -->
+<nav class="nav" aria-label="Section navigation">
+  <div class="nav-dot active" onclick="scrollToSection(0)" title="Cover"></div>
+  <div class="nav-dot" onclick="scrollToSection(1)" title="The Before"></div>
+  <div class="nav-dot" onclick="scrollToSection(2)" title="The Insight"></div>
+  <div class="nav-dot" onclick="scrollToSection(3)" title="My Approach"></div>
+  <div class="nav-dot" onclick="scrollToSection(4)" title="Key Decisions"></div>
+  <div class="nav-dot" onclick="scrollToSection(5)" title="The Results"></div>
+  <div class="nav-dot" onclick="scrollToSection(6)" title="Why It Worked"></div>
+  <div class="nav-dot" onclick="scrollToSection(7)" title="Reflection"></div>
+</nav>
+<!-- MAIN CONTENT -->
+<main class="page">
+
+  <!-- COVER -->
+  <section class="cover" id="s0">
+    <div class="cover-label fade-in">
+      <span>Case Study 01</span> &nbsp;·&nbsp; Enterprise Imaging &nbsp;·&nbsp; 0→1 Build
+    </div>
+    <h1 class="cover-title fade-in">
+      From Five<br>Viewers to<br><em>One Platform</em>
+    </h1>
+    <p class="cover-sub fade-in">
+      How I built a flagship enterprise imaging viewer from zero — defining the clinical problem, inventing a category-first workflow, and scaling to 2M+ monthly users and $3M ARR in year one.
+    </p>
+    <div class="cover-meta fade-in">
+      <div class="cover-meta-item">
+        <label>My Role</label>
+        <span>Lead Product Manager</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Company</label>
+        <span>Optum (via Change Healthcare)</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Scope</label>
+        <span>0→1 Build · GTM · Scale</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Team</label>
+        <span>20+ engineers + cross-functional</span>
+      </div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <!-- THE BEFORE -->
+  <section class="section fade-in" id="s1">
+    <div class="section-number">01 — The Situation</div>
+    <h2 class="section-heading">The<br><em>Before</em></h2>
+    <p class="section-intro">
+      When I stepped into this role, the imaging portfolio had strong individual components — but no coherent enterprise solution. Clinicians were patching together care across a fragmented stack.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-num">01</span>
+        <p>Clinicians navigating <strong>5–7 separate legacy viewers</strong> depending on specialty — no unified experience</p>
+      </div>
+      <div class="card">
+        <span class="card-num">02</span>
+        <p>No true enterprise solution in the market — leaving a clear <strong>strategic gap</strong> and competitive vulnerability</p>
+      </div>
+      <div class="card">
+        <span class="card-num">03</span>
+        <p>CIOs frustrated by <strong>operational overhead</strong> of managing parallel imaging stacks</p>
+      </div>
+      <div class="card">
+        <span class="card-num">04</span>
+        <p>No clear product owner for the end-to-end experience — showing up in deals and <strong>losing ground</strong></p>
+      </div>
+      <div class="card">
+        <span class="card-num">05</span>
+        <p>Imaging platform positioned as a <strong>radiology-only tool</strong> — excluding the broader care team</p>
+      </div>
+      <div class="card">
+        <span class="card-num">06</span>
+        <p>Each specialty required a different tool — care teams had <strong>no shared clinical context</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE INSIGHT -->
+  <section class="section fade-in" id="s2">
+    <div class="section-number">02 — The Real Problem</div>
+    <h2 class="section-heading">The Problem<br>Behind the<br><em>Problem</em></h2>
+    <p class="section-intro">
+      The obvious answer was to build a better viewer. That wasn't the real problem. After 150+ clinical discovery interviews, a different picture emerged.
+    </p>
+
+    <div class="highlight-card">
+      <p>Clinicians don't think in studies or modalities. They think in patient stories. The problem wasn't tooling — it was a cognitive workflow gap that no one had named yet.</p>
+      <cite>— Discovery insight, 150+ interviews with hospitalists, intensivists, surgeons, trauma teams, APPs</cite>
+    </div>
+
+    <div class="card-grid" style="margin-top: 2rem;">
+      <div class="card">
+        <span class="card-num">Root cause 01</span>
+        <p>Non-imaging clinicians couldn't make sense of a patient's <strong>longitudinal imaging history</strong> — dozens or hundreds of exams with no narrative thread</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Root cause 02</span>
+        <p>Complex cases triggered <strong>repeated radiologist interruptions</strong> — not because clinicians lacked skill, but because they lacked the right context</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Root cause 03</span>
+        <p>The imaging experience was designed for <strong>radiology-level expertise</strong> — entirely inaccessible to the broader care team</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Root cause 04</span>
+        <p>No product in the market had reframed imaging as a <strong>shared clinical communication tool</strong> — the category was wide open</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5rem; padding: 1.5rem; background: var(--accent-soft); border-left: 3px solid var(--accent);">
+      <p style="font-size: 0.88rem; color: var(--ink);">
+        <strong>The reframe:</strong> This wasn't a viewer problem. It was a cognitive load problem. The question became: <em>How do we help any clinician quickly understand the patient's imaging story over time — without requiring radiology expertise?</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- MY APPROACH -->
+  <section class="section fade-in" id="s3">
+    <div class="section-number">03 — My Approach</div>
+    <h2 class="section-heading">How I<br><em>Built It</em></h2>
+    <p class="section-intro">
+      End-to-end ownership — from defining the clinical problem to shipping, commercializing, and scaling. Six parallel tracks running simultaneously.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <h4>Deep clinical discovery before a single line of code</h4>
+          <p>Conducted 150+ interviews across hospitalists, intensivists, trauma teams, surgeons, and APPs. Focused not on features but on how clinicians reason about imaging in real scenarios — where cognitive friction appeared and why. Insights shaped the entire product direction.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <h4>Defined the north star and invented StoryView</h4>
+          <p>Translated discovery into a clear intended-use statement. Led cross-functional design using a design-thinking approach: lightweight prototypes, rapid clinician validation, focused MVP scoping. The result was StoryView — a longitudinal imaging narrative that became our trademark differentiator.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <h4>Built the cross-functional delivery model</h4>
+          <p>Aligned 20+ engineers with matrixed UX, clinical SMEs, operations, compliance, and commercial functions around a single quality bar. Ran weekly workflow reviews on inter-study linking, diagnostic navigation, latency thresholds, and comparison logic — ensuring design reflected clinical thinking, not PACS conventions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <h4>Secured additional UX resources and raised the bar</h4>
+          <p>Pushed for enterprise-grade quality and secured the UX investment to back it up. Drove consistency across modalities — radiology, cardiology, pathology, patient access — so the experience felt unified regardless of specialty context.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <div class="step-content">
+          <h4>Built the commercialization plan from the ground up</h4>
+          <p>Repositioned the viewer as an enterprise asset, not a feature. Built outcome-based messaging aligned to CIO and CMIO priorities. Packaged StoryView as a premium capability for enterprise customers — anchoring upsell and renewal conversations. Partnered with sales and clinical adoption teams on rollout playbooks and pilot strategy.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">06</span>
+        <div class="step-content">
+          <h4>Drove structured adoption at enterprise scale</h4>
+          <p>Designed targeted pilot programs, enterprise rollout playbooks, and patient education paths. Ensured we could demonstrate measurable workflow impact — not just adoption numbers — to support renewal and expansion conversations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORYVIEW FEATURE -->
+    <div class="feature-box fade-in">
+      <span class="feature-box-label">Signature invention</span>
+      <h3>StoryView™</h3>
+      <p>StoryView collapsed a patient's entire imaging history into a single, longitudinal narrative. Instead of hunting through scattered exams, any clinician could see the patient's imaging journey — curated key images tied to the condition being treated, with reports automatically surfaced at the impression level.</p>
+      <p><strong>Example:</strong> A hospitalist managing a TBI patient with 250+ imaging exams could see, in seconds, how the condition had evolved — without opening each study, without calling radiology. Reports highlighted. Key images curated by condition. Decision context immediately available.</p>
+      <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--accent); font-family: 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase;">First-of-its-kind · Trademark registered · Premium enterprise tier</p>
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section class="section fade-in" id="s4">
+    <div class="section-number">04 — Key Decisions</div>
+    <h2 class="section-heading">Where I<br><em>Chose</em></h2>
+    <p class="section-intro">
+      The decisions that defined the product — and what I was willing to say no to.
+    </p>
+
+    <div class="decision">
+      <div class="decision-q">Decision 01</div>
+      <h4>Reframe the problem before building anything</h4>
+      <p>There was pressure to move fast and build a "better viewer." I pushed back and invested first in deep discovery — 150+ interviews before committing to a direction. That investment surfaced the cognitive workflow gap that became StoryView. Without it, we'd have built a technically superior tool that solved the wrong problem.</p>
+    </div>
+    <div class="decision">
+      <div class="decision-q">Decision 02</div>
+      <h4>Deprioritize feature breadth to nail one category-defining workflow</h4>
+      <p>We had a long list of incremental asks from existing customers. I deliberately said no to most of them in the MVP phase to protect focus on StoryView. That meant short-term friction with some stakeholders — but it's what gave us a differentiated flagship rather than a feature-complete commodity.</p>
+    </div>
+    <div class="decision">
+      <div class="decision-q">Decision 03</div>
+      <h4>Expand scope to include patients and the full care team — not just radiology</h4>
+      <p>The safe play was building for radiologists — our established base. I made the call to design for the full care team from day one, which increased complexity but unlocked a fundamentally different market position. It also led directly to patient-facing features that opened new adoption vectors.</p>
+    </div>
+    <div class="decision">
+      <div class="decision-q">Decision 04</div>
+      <h4>Align incentives around shared outcomes, not org chart lines</h4>
+      <p>StoryView required engineering, UX, clinical SMEs, and commercial teams to row together — none of whom reported to me. I aligned everyone around the same north-star question: <em>does this help a hospitalist make a faster, better-informed decision?</em> That shared language replaced hierarchy as the alignment mechanism.</p>
+    </div>
+    <div class="decision">
+      <div class="decision-q">Decision 05</div>
+      <h4>Pull back when over-engineering threatened clinical usability</h4>
+      <p>Multiple times during development, I had to interrupt technically elegant solutions that were drifting from clinical reality. The hardest part of 0→1 work isn't building — it's continuously pulling the team back to the user's actual mental model and resisting the pull of architectural elegance for its own sake.</p>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section fade-in" id="s5">
+    <div class="section-number">05 — The Results</div>
+    <h2 class="section-heading">The<br><em>Results</em></h2>
+
+    <div class="metrics-hero">
+      <div class="metric-block accent-bg">
+        <span class="metric-label">Monthly active users</span>
+        <div class="metric-value">2M+</div>
+        <div class="metric-sub">Clinicians and patients across global health systems</div>
+      </div>
+      <div class="metric-block">
+        <span class="metric-label">ARR — Year 1</span>
+        <div class="metric-value">$3M</div>
+        <div class="metric-sub">38% adoption across target hospital systems within first year</div>
+      </div>
+    </div>
+    <div class="metrics-secondary">
+      <div class="metric-sm">
+        <span class="metric-label">Radiologist interruptions</span>
+        <div class="metric-value">–60%</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Time to first image</span>
+        <div class="metric-value">&lt;3s</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Clicks per exam reduced</span>
+        <div class="metric-value">2–4</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5rem;">
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">Market impact</span>
+          <p>Became the <strong>default imaging access point</strong> in several major health systems within months of launch</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Commercial impact</span>
+          <p>StoryView became the <strong>anchor capability</strong> in multi-million dollar enterprise deals and renewal uplifts</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Clinical impact</span>
+          <p>Physicians began using StoryView to <strong>explain patient conditions</strong> to families — imaging became a communication tool</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Strategic impact</span>
+          <p>Repositioned Optum from a <strong>radiology tool vendor</strong> to an enterprise clinical platform — a fundamentally different market position</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card" style="margin-top: 2.5rem;">
+      <p>The first tool that finally matches how we work.</p>
+      <cite>— Customer feedback post-launch</cite>
+    </div>
+  </section>
+
+  <!-- WHY IT WORKED -->
+  <section class="section fade-in" id="s6">
+    <div class="section-number">06 — Why It Worked</div>
+    <h2 class="section-heading">Why It<br><em>Worked</em></h2>
+    <p class="section-intro">
+      The viewer succeeded not because of the technology — but because of how we approached the problem. These are the operating principles that carried the work.
+    </p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-icon">01</div>
+        <div>
+          <h4>Start with cognitive load, not feature lists</h4>
+          <p>Discovery focused on where and why clinicians lost context — not what features they wanted. That distinction is everything in healthcare product. Users rarely ask for the right thing; they describe the symptom of the problem they actually have.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">02</div>
+        <div>
+          <h4>Name the problem no one has named yet</h4>
+          <p>Reframing the issue as a "cognitive workflow gap" gave everyone — engineering, commercial, clinical — a shared language to rally around. The reframe is often the product strategy.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">03</div>
+        <div>
+          <h4>Influence without authority through shared outcomes</h4>
+          <p>Nothing in this build went smoothly through org-chart lines. Alignment came from relentlessly connecting each team's work to one question: does this help a clinician make a faster, better-informed decision? That question replaced hierarchy.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">04</div>
+        <div>
+          <h4>Protect the north star from incremental erosion</h4>
+          <p>The biggest risk in 0→1 work isn't technical failure — it's slow drift back to familiar solutions. I had to continuously re-anchor the team to clinical reality and resist technically elegant but clinically meaningless design decisions.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">05</div>
+        <div>
+          <h4>Build the commercial story in parallel, not after</h4>
+          <p>GTM was not a post-launch activity. The StoryView premium-tier packaging, the CIO and CMIO messaging, the enterprise rollout playbooks — all of it was designed alongside the product. That's why adoption scaled in year one instead of plateauing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFLECTION -->
+  <section class="section fade-in" id="s7">
+    <div class="section-number">07 — Honest Reflection</div>
+    <h2 class="section-heading">What I'd<br><em>Do Differently</em></h2>
+
+    <div class="reflection-grid">
+      <div class="reflection-item">
+        <h4>Move faster on GTM alignment</h4>
+        <p>The product and commercial tracks were mostly sequential rather than truly parallel in the early phases. Earlier, deeper integration with sales would have accelerated enterprise pipeline and reduced the time between launch and meaningful ARR.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Invest in patient-facing earlier</h4>
+        <p>Patient adoption became a meaningful growth lever — but it was treated as secondary to clinician workflows initially. In hindsight, the patient use case was differentiated enough to warrant a parallel track from day one.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Instrument adoption metrics sooner</h4>
+        <p>We had strong top-line adoption numbers, but granular feature-level telemetry lagged. Earlier instrumentation would have accelerated StoryView iteration and given us sharper clinical outcome data to anchor enterprise renewals.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Document the decision architecture</h4>
+        <p>The strategic decisions that shaped this product lived in my head and in meeting notes. A cleaner decision log would have accelerated onboarding of new team members and preserved institutional context as the team scaled.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <h2>Want to talk through<br>how this applies to your product?</h2>
+    <p>Available for senior PM, Director of Product, and fractional engagements.</p>
+    <a href="mailto:rinikothari03@gmail.com" class="cta-link">Get in touch</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer fade-in">
+    <div class="footer-name">Rini Kothari</div>
+    <div class="footer-links">
+      <span>Lead Product Manager</span>
+      <span>HealthTech · Enterprise Imaging</span>
+      <span>linkedin.com/in/rinikothari</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+
+  // PROGRESS BAR
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    document.getElementById('progress').style.width = (scrolled / total * 100) + '%';
+
+    // NAV DOTS
+    const sections = document.querySelectorAll('[id^="s"]');
+    const dots = document.querySelectorAll('.nav-dot');
+    let current = 0;
+    sections.forEach((s, i) => {
+      if (window.scrollY >= s.offsetTop - 200) current = i;
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  });
+
+  // SCROLL TO SECTION
+  function scrollToSection(i) {
+    const s = document.getElementById('s' + i);
+    if (s) s.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // FADE IN OBSERVER
+  function initObserver() {
+    // Immediately show elements already in view
+    document.querySelectorAll('.fade-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => observer.observe(el));
+  }
+  document.addEventListener('DOMContentLoaded', initObserver);
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  }, 300);
+</script>
+</body>
+</html>

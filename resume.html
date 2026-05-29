@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rini Kothari — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #faf9f7;
+    --muted: #6b6860;
+    --rule: #e2e0db;
+    --accent: #2a52be;
+    --accent-soft: #eef1fa;
+    --warm: #f4f2ee;
+    --dark: #141312;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 820px; margin: 0 auto; padding: 0 2.5rem 6rem; }
+
+  /* HEADER */
+  .site-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 2rem 0; border-bottom: 1px solid var(--rule);
+    margin-bottom: 5rem;
+  }
+  .site-header-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;
+    text-decoration: none; color: var(--ink);
+  }
+  .site-header-links {
+    display: flex; gap: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .site-header-links a {
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-header-links a:hover { color: var(--ink); }
+  .site-header-links a.active { color: var(--accent); }
+
+  /* RESUME HERO */
+  .resume-hero {
+    padding: 2rem 0 4rem; border-bottom: 1px solid var(--rule);
+    display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: end;
+  }
+  .resume-hero-left {}
+  .resume-hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.25rem;
+  }
+  .resume-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -0.035em; margin-bottom: 1.25rem;
+  }
+  .resume-hero h1 em { font-style: italic; font-weight: 400; }
+  .resume-hero-title {
+    font-size: 1rem; color: var(--muted); line-height: 1.6;
+  }
+  .resume-hero-right {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.06em;
+    color: var(--muted); line-height: 2;
+  }
+  .resume-hero-right a { color: var(--accent); text-decoration: none; }
+  .resume-hero-right a:hover { text-decoration: underline; }
+  .resume-hero-badge {
+    display: inline-block; margin-top: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--accent-soft); color: var(--accent);
+    padding: 0.3rem 0.75rem;
+  }
+
+  /* SECTION */
+  .resume-section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
+  .resume-section:last-of-type { border-bottom: none; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+  }
+
+  /* SUMMARY */
+  .summary-text {
+    font-size: 1rem; line-height: 1.85; color: var(--ink);
+    max-width: 680px;
+  }
+
+  /* EXPERIENCE */
+  .exp-entry { margin-bottom: 3rem; }
+  .exp-entry:last-child { margin-bottom: 0; }
+
+  .exp-header {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 1rem; align-items: baseline; margin-bottom: 0.25rem;
+  }
+  .exp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
+  }
+  .exp-dates {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap;
+  }
+  .exp-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.35rem;
+  }
+  .exp-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.06em;
+    color: var(--muted); margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .exp-scope {
+    font-size: 0.83rem; color: var(--muted); line-height: 1.65;
+    margin-bottom: 1.25rem; padding: 1rem 1.25rem;
+    background: var(--warm); border-left: 2px solid var(--rule);
+  }
+  .exp-scope strong { color: var(--ink); font-weight: 500; }
+
+  .exp-groups { display: flex; flex-direction: column; gap: 1.25rem; }
+  .exp-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.6rem;
+  }
+  .exp-bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+  .exp-bullets li {
+    font-size: 0.87rem; line-height: 1.65; color: var(--ink);
+    padding-left: 1.2rem; position: relative;
+  }
+  .exp-bullets li::before {
+    content: '–'; position: absolute; left: 0;
+    color: var(--accent); font-weight: 500;
+  }
+
+  .exp-divider { height: 1px; background: var(--rule); margin: 2.5rem 0; }
+
+  /* EDUCATION */
+  .edu-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule);
+  }
+  .edu-item { background: var(--paper); padding: 1.75rem 2rem; }
+  .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.4rem;
+  }
+  .edu-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+  }
+  .skill-item { background: var(--paper); padding: 1.5rem 1.75rem; }
+  .skill-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.6rem; display: block;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-tag {
+    font-size: 0.75rem; color: var(--muted);
+    background: var(--warm); padding: 0.2rem 0.6rem;
+    border: 1px solid var(--rule);
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--rule); padding: 2rem 0;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; }
+  .footer-right {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    .page { padding: 0 1.5rem 4rem; }
+    .resume-hero { grid-template-columns: 1fr; gap: 1.5rem; }
+    .resume-hero-right { text-align: left; }
+    .exp-header { grid-template-columns: 1fr; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .site-header-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+<div class="page">
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <a href="portfolio_home.html" class="site-header-name">Rini Kothari</a>
+    <nav class="site-header-links">
+      <a href="portfolio_home.html#case-studies">Case Studies</a>
+      <a href="portfolio_home.html#expertise">Expertise</a>
+      <a href="portfolio_home.html#contact">Contact</a>
+      <a href="resume.html" class="active">Resume</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="resume-hero fade-in">
+    <div class="resume-hero-left">
+      <div class="resume-hero-label">Resume · Product Leadership</div>
+      <h1>Rini<br><em>Kothari</em></h1>
+      <p class="resume-hero-title">Lead Product Manager &nbsp;·&nbsp; MedTech &nbsp;·&nbsp; Enterprise Platforms</p>
+    </div>
+    <div class="resume-hero-right">
+      Canada (remote‑first)<br>
+      <a href="mailto:rinikothari03@gmail.com">rinikothari03@gmail.com</a><br>
+      <a href="https://www.linkedin.com/in/rinikothari" target="_blank">linkedin.com/in/rinikothari</a>
+      <div><span class="resume-hero-badge">Canadian Citizen · TN Eligible</span></div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <section class="resume-section fade-in">
+    <div class="section-label">Summary</div>
+    <p class="summary-text">
+      MedTech product leader with 10+ years driving enterprise platforms from strategy to scaled adoption. Owns multi‑million‑dollar product portfolios across enterprise imaging, EMR integrations, and clinical workflows, delivering measurable gains in revenue, adoption, and operational efficiency. Known for operating at the intersection of product, clinical, and commercial teams — translating ambiguous market needs into high‑impact product bets. Builds systems, teams, and alignment mechanisms that enable consistent execution at scale. Trusted partner to executives in shaping product direction, portfolio investment, and go‑to‑market strategy.
+    </p>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="resume-section fade-in">
+    <div class="section-label">Experience</div>
+
+    <!-- Optum -->
+    <div class="exp-entry">
+      <div class="exp-header">
+        <div class="exp-title">Lead Product Manager</div>
+        <div class="exp-dates">Oct 2018 – Present</div>
+      </div>
+      <div class="exp-company">Optum &nbsp;(via acquisition of Change Healthcare)</div>
+      <div class="exp-note">Promoted twice during tenure</div>
+
+      <div class="exp-scope">
+        <strong>Portfolio:</strong> Enterprise Viewer, Reference Viewers, EMR &amp; AI integrations &nbsp;·&nbsp;
+        <strong>Users:</strong> 2M+ MAU across hospitals, care teams, and patients &nbsp;·&nbsp;
+        <strong>Team:</strong> 20+ engineers + matrixed UX, Operations, Compliance, Commercial
+      </div>
+
+      <div class="exp-groups">
+        <div>
+          <div class="exp-group-title">Business Impact</div>
+          <ul class="exp-bullets">
+            <li>Scaled flagship cloud‑based Enterprise Viewer to 38% adoption and $3M ARR within the first year, establishing it as the core growth driver in the portfolio</li>
+            <li>Expanded platform into pathology through strategic partnership, unlocking multi‑specialty revenue streams and increasing enterprise stickiness</li>
+            <li>Delivered $1.5M in annual cost savings by leading end‑of‑life strategy for legacy viewers and driving enterprise‑wide customer migration</li>
+            <li>Improved clinical workflow efficiency by reducing diagnostic friction (2–4 clicks per exam) and achieving sub‑3‑second time‑to‑first‑image, enabling faster care decisions in high‑volume environments</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="exp-group-title">Product Strategy &amp; Market Positioning</div>
+          <ul class="exp-bullets">
+            <li>Defined and executed portfolio prioritization strategy using RICE and market signals, accelerating time‑to‑market by ~3 months across key initiatives</li>
+            <li>Identified and operationalized StoryView™ — a differentiated longitudinal imaging workflow — strengthening competitive positioning and reducing clinician escalations to radiologists by ~60%</li>
+            <li>Shaped EMR integration strategy across Epic, Cerner, Meditech, and Allscripts, enabling seamless study‑level and encounter‑based workflows and driving platform adoption at scale</li>
+            <li>Led integration of AI‑driven clinical insights (Aidoc), establishing a defensible use case around triage acceleration and critical findings management</li>
+            <li>Partnered with Sales and GTM teams to support enterprise deals, influencing product positioning and customer adoption programs</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="exp-group-title">Leadership &amp; Execution</div>
+          <ul class="exp-bullets">
+            <li>Led 20+ engineers and aligned matrixed UX, Operations, Compliance, and Commercial functions to deliver scalable platform capabilities</li>
+            <li>Built and implemented operating systems for execution — Aha! portfolio dashboards, structured prioritization, team rituals — improving visibility, accountability, and delivery consistency</li>
+            <li>Served as interim executive sponsor for a multi‑million‑dollar portfolio, driving leadership alignment, investment decisions, and cross‑org prioritization</li>
+            <li>Coached and developed product talent, raising the bar on ownership, execution quality, and strategic thinking across the team</li>
+            <li>Conducted 150+ customer discovery interviews across clinicians and care teams to identify unmet needs and shape product direction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-divider"></div>
+
+    <!-- Career Break -->
+    <div class="exp-entry">
+      <div class="exp-header">
+        <div class="exp-title">Career Break &amp; Freelance Product Consulting</div>
+        <div class="exp-dates">Dec 2016 – Oct 2018</div>
+      </div>
+      <div class="exp-company">Independent</div>
+      <ul class="exp-bullets" style="margin-top:0.75rem;">
+        <li>Pursued global travel and personal development while providing freelance product consulting to early‑stage teams, strengthening cross‑cultural perspective, adaptability, and leadership judgement</li>
+      </ul>
+    </div>
+
+    <div class="exp-divider"></div>
+
+    <!-- JP Morgan -->
+    <div class="exp-entry">
+      <div class="exp-header">
+        <div class="exp-title">Manager, Credit Risk &amp; Product Strategy</div>
+        <div class="exp-dates">May 2014 – Dec 2016</div>
+      </div>
+      <div class="exp-company">J.P. Morgan</div>
+      <ul class="exp-bullets" style="margin-top:0.75rem;">
+        <li>Managed credit risk for a diverse EMEA client portfolio, leveraging deep market insights to shape product strategy, maximize risk‑adjusted returns, and deliver client‑centric solutions</li>
+        <li>Advised senior leadership and institutional clients on strategic risk and portfolio decisions</li>
+        <li>Partnered across product, legal, and compliance teams to execute multi‑jurisdictional deals, reducing approval timelines and improving execution reliability</li>
+        <li>Managed 4 junior analysts; conducted annual credit risk training and implemented a structured 30‑60‑90 onboarding plan to accelerate ramp‑up time</li>
+      </ul>
+    </div>
+
+    <div class="exp-divider"></div>
+
+    <!-- Infosys -->
+    <div class="exp-entry">
+      <div class="exp-header">
+        <div class="exp-title">Business Analyst</div>
+        <div class="exp-dates">Nov 2009 – Jun 2012</div>
+      </div>
+      <div class="exp-company">Infosys</div>
+      <ul class="exp-bullets" style="margin-top:0.75rem;">
+        <li>Led strategic collaboration with cross‑functional teams to analyze business requirements, streamline processes, and translate client needs into technology solutions — establishing a foundation in product strategy and delivery</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="resume-section fade-in">
+    <div class="section-label">Education</div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <div class="edu-degree">MBA</div>
+        <div class="edu-school">Symbiosis Institute of Business Management</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">Bachelor of Engineering</div>
+        <div class="edu-school">Cummins College of Engineering</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="resume-section fade-in">
+    <div class="section-label">Skills &amp; Domain Expertise</div>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <span class="skill-category">Clinical Domain</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Enterprise Imaging</span>
+          <span class="skill-tag">PACS</span>
+          <span class="skill-tag">Radiology</span>
+          <span class="skill-tag">Pathology</span>
+          <span class="skill-tag">Clinical Workflows</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-category">Interoperability</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Epic</span>
+          <span class="skill-tag">Cerner</span>
+          <span class="skill-tag">Meditech</span>
+          <span class="skill-tag">Allscripts</span>
+          <span class="skill-tag">EHR Integrations</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-category">AI / ML</span>
+        <div class="skill-tags">
+          <span class="skill-tag">AI Clinical Insights</span>
+          <span class="skill-tag">Aidoc</span>
+          <span class="skill-tag">Triage Acceleration</span>
+          <span class="skill-tag">AI Endpoint Design</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-category">Product Execution</span>
+        <div class="skill-tags">
+          <span class="skill-tag">OKRs</span>
+          <span class="skill-tag">RICE Prioritization</span>
+          <span class="skill-tag">Aha!</span>
+          <span class="skill-tag">Roadmapping</span>
+          <span class="skill-tag">Discovery</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-category">Commercial</span>
+        <div class="skill-tags">
+          <span class="skill-tag">GTM Strategy</span>
+          <span class="skill-tag">Enterprise Sales</span>
+          <span class="skill-tag">Portfolio Strategy</span>
+          <span class="skill-tag">CIO/CMIO Positioning</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-category">Leadership</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Cross-functional Teams</span>
+          <span class="skill-tag">Executive Alignment</span>
+          <span class="skill-tag">Stakeholder Management</span>
+          <span class="skill-tag">Talent Development</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name">Rini Kothari</div>
+    <div class="footer-right">Portfolio · 2026</div>
+  </footer>
+
+</div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  });
+</script>
+</body>
+</html>

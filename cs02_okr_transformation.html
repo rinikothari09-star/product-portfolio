@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study 02 — Rini Kothari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #faf9f7;
+    --muted: #6b6860;
+    --rule: #e2e0db;
+    --accent: #1a6b4a;
+    --accent-soft: #edf5f1;
+    --warm: #f4f2ee;
+    --dark: #0d1a14;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  
+
+  /* PROGRESS */
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); width: 0%; z-index: 100; transition: width 0.1s linear; }
+
+  /* NAV DOTS */
+  .nav { position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.65rem; z-index: 50; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+  .nav-dot.active { background: var(--accent); transform: scale(1.5); }
+  .nav-dot:hover { background: var(--muted); }
+
+  /* BACK NAV */
+  .back-nav {
+    position: fixed; top: 1.5rem; left: 2rem; z-index: 100;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .back-nav:hover { color: var(--ink); }
+
+  /* LAYOUT */
+  .page { max-width: 720px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 4rem 0 5rem;
+    border-bottom: 1px solid var(--rule); position: relative;
+  }
+  .cover-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 3rem;
+  }
+  .cover-eyebrow span { color: var(--accent); }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  }
+  .cover-title em { font-style: italic; font-weight: 400; }
+  .cover-sub { font-size: 1rem; color: var(--muted); max-width: 520px; line-height: 1.75; margin-bottom: 3rem; }
+  .cover-meta { display: flex; gap: 3rem; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 2rem; }
+  .cover-meta-item label { display: block; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .cover-meta-item span { font-size: 0.9rem; font-weight: 500; }
+  .scroll-cue { position: absolute; bottom: 2rem; right: 0; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.5rem; }
+  .scroll-cue::before { content: ''; display: block; width: 1px; height: 40px; background: var(--rule); transform-origin: top; animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.4);opacity:0.4} }
+
+  /* SECTIONS */
+  .section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .section:last-child { border-bottom: none; }
+  .section-number { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+  .section-heading { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 2rem; }
+  .section-heading em { font-style: italic; font-weight: 400; }
+  .section-intro { font-size: 1rem; color: var(--muted); max-width: 560px; margin-bottom: 2.5rem; border-left: 2px solid var(--accent); padding-left: 1.25rem; line-height: 1.75; }
+
+  /* PROBLEM CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2rem; }
+  .card { background: var(--paper); padding: 1.5rem; }
+  .card-num { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+  .card p { font-size: 0.85rem; line-height: 1.6; }
+
+  /* QUOTE BLOCK */
+  .quote-block {
+    background: var(--ink); color: var(--paper);
+    padding: 2.5rem; margin: 2.5rem 0; position: relative; overflow: hidden;
+  }
+  .quote-block::before { content: '\201C'; position: absolute; top: -1rem; left: 1.5rem; font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(255,255,255,0.05); line-height: 1; pointer-events: none; }
+  .quote-block p { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2.2vw, 1.4rem); font-style: italic; font-weight: 400; line-height: 1.55; position: relative; }
+  .quote-block cite { display: block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,249,247,0.35); font-style: normal; }
+
+  /* BEFORE/AFTER CONTRAST */
+  .contrast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2.5rem 0; }
+  .contrast-col { padding: 2rem; background: var(--paper); }
+  .contrast-col.after { background: var(--accent-soft); }
+  .contrast-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 1.25rem; display: block; }
+  .contrast-col .contrast-label { color: var(--muted); }
+  .contrast-col.after .contrast-label { color: var(--accent); }
+  .contrast-item { display: flex; gap: 0.75rem; margin-bottom: 0.85rem; align-items: flex-start; font-size: 0.83rem; line-height: 1.55; }
+  .contrast-icon { flex-shrink: 0; margin-top: 0.15rem; font-size: 0.75rem; }
+
+  /* STEPS */
+  .steps { margin-top: 2.5rem; }
+  .step { display: grid; grid-template-columns: 3rem 1fr; gap: 1.5rem; padding: 1.75rem 0; border-top: 1px solid var(--rule); align-items: start; }
+  .step:last-child { border-bottom: 1px solid var(--rule); }
+  .step-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); padding-top: 0.2rem; }
+  .step h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .step p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* OKR EXAMPLE BOX */
+  .okr-box { border: 1px solid var(--accent); padding: 2.5rem; margin: 3rem 0; position: relative; }
+  .okr-box-label { position: absolute; top: -0.6rem; left: 1.5rem; background: var(--paper); font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); padding: 0 0.5rem; }
+  .okr-row { margin-bottom: 1.5rem; }
+  .okr-row:last-child { margin-bottom: 0; }
+  .okr-type { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; display: block; }
+  .okr-old { font-size: 0.83rem; color: var(--muted); text-decoration: line-through; margin-bottom: 0.25rem; }
+  .okr-new { font-size: 0.9rem; font-weight: 500; }
+  .okr-divider { height: 1px; background: var(--rule); margin: 1.25rem 0; }
+
+  /* METRICS */
+  .metrics-hero { margin: 3rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .metric-block { background: var(--paper); padding: 2.5rem 2rem; }
+  .metric-block.dark { background: var(--ink); color: var(--paper); }
+  .metric-block.green { background: var(--accent); color: var(--paper); }
+  .metric-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block; }
+  .metric-block.dark .metric-label, .metric-block.green .metric-label { color: rgba(250,249,247,0.45); }
+  .metric-value { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+  .metric-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+  .metric-block.dark .metric-sub, .metric-block.green .metric-sub { color: rgba(250,249,247,0.5); }
+
+  .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-top: none; }
+  .metric-sm { background: var(--warm); padding: 1.5rem; }
+  .metric-sm .metric-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+  .metric-sm .metric-value { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.02em; }
+
+  /* DECISIONS */
+  .decision { margin: 0; padding: 1.75rem 0; border-top: 1px solid var(--rule); }
+  .decision:last-child { border-bottom: 1px solid var(--rule); }
+  .decision-tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+  .decision h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .decision p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* PRINCIPLES */
+  .principle { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.25rem 0; border-top: 1px solid var(--rule); }
+  .principle:last-child { border-bottom: 1px solid var(--rule); }
+  .principle-num { width: 32px; height: 32px; flex-shrink: 0; border: 1px solid var(--rule); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); }
+  .principle h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .principle p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+  /* REFLECTION */
+  .reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+  .reflection-item h4 { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .reflection-item p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 5rem 0 3rem; }
+  .cta-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .cta-section p { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; }
+  .cta-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .cta-link { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); text-decoration: none; border: 1px solid var(--ink); padding: 0.85rem 1.75rem; transition: all 0.2s; }
+  .cta-link:hover { background: var(--ink); color: var(--paper); }
+  .cta-link.primary { background: var(--ink); color: var(--paper); }
+  .cta-link.primary:hover { background: var(--dark); border-color: var(--dark); }
+
+  /* FOOTER */
+  .footer { border-top: 1px solid var(--rule); padding: 2rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; }
+  .footer-right { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* CALLOUT */
+  .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; }
+  .callout p { font-size: 0.87rem; line-height: 1.7; }
+  .callout strong { font-weight: 500; }
+
+  /* CASE NAV */
+  .case-nav { display: flex; justify-content: space-between; align-items: center; padding: 2.5rem 0; border-top: 1px solid var(--rule); margin-top: 2rem; }
+  .case-nav a { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+  .case-nav a:hover { color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .metrics-hero, .contrast-grid { grid-template-columns: 1fr; }
+    .metrics-row { grid-template-columns: 1fr 1fr; }
+    .reflection-grid { grid-template-columns: 1fr; }
+    .nav, .back-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<a href="portfolio_home.html" class="back-nav">← Portfolio</a>
+
+<nav class="nav">
+  <div class="nav-dot active" onclick="scrollTo(0)" title="Cover"></div>
+  <div class="nav-dot" onclick="scrollTo(1)" title="The Before"></div>
+  <div class="nav-dot" onclick="scrollTo(2)" title="The Diagnosis"></div>
+  <div class="nav-dot" onclick="scrollTo(3)" title="My Approach"></div>
+  <div class="nav-dot" onclick="scrollTo(4)" title="Key Decisions"></div>
+  <div class="nav-dot" onclick="scrollTo(5)" title="Results"></div>
+  <div class="nav-dot" onclick="scrollTo(6)" title="Why It Worked"></div>
+  <div class="nav-dot" onclick="scrollTo(7)" title="Reflection"></div>
+</nav>
+<main class="page">
+
+  <!-- COVER -->
+  <section class="cover" id="s0">
+    <div class="cover-eyebrow fade-in"><span>Case Study 02</span> &nbsp;·&nbsp; Operational Excellence &nbsp;·&nbsp; Systems Building</div>
+    <h1 class="cover-title fade-in">
+      Building a<br>System That<br><em>Connects.</em>
+    </h1>
+    <p class="cover-sub fade-in">
+      How I transformed a fragmented, activity-driven portfolio operating model into a cohesive OKR-driven delivery engine — improving roadmap predictability by 25%, cutting last-minute scope changes by 40%, and accelerating a major cloud modernization by six months.
+    </p>
+    <div class="cover-meta fade-in">
+      <div class="cover-meta-item"><label>My Role</label><span>Lead Product Manager</span></div>
+      <div class="cover-meta-item"><label>Company</label><span>Optum</span></div>
+      <div class="cover-meta-item"><label>Scope</label><span>Portfolio-wide operating model</span></div>
+      <div class="cover-meta-item"><label>Stakes</label><span>Enterprise renewals + cloud modernization</span></div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <!-- THE BEFORE -->
+  <section class="section fade-in" id="s1">
+    <div class="section-number">01 — The Situation</div>
+    <h2 class="section-heading">Flying<br><em>Blind</em></h2>
+    <p class="section-intro">
+      When I took over the medical imaging viewers portfolio, the teams were talented and genuinely busy — but operating in silos. Strong people, broken system.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-num">Symptom 01</span>
+        <p>Each team tracked <strong>different metrics</strong> — velocity, bug counts, release numbers. None connected to clinical or business outcomes.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Symptom 02</span>
+        <p><strong>Mid-quarter roadmap churn</strong> was constant. Priorities shifted reactively, with no shared framework to make trade-offs explicit.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Symptom 03</span>
+        <p>Two teams were solving the <strong>same image-load problem</strong> from different ends — without knowing it. Duplicated work, wasted capacity.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Symptom 04</span>
+        <p>Siloed architectural decisions during a <strong>major cloud modernization</strong> — teams making well-intentioned but uncoordinated choices.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Symptom 05</span>
+        <p>Leadership couldn't answer: <em>"How does this feature help a radiologist read faster?"</em> — no clear <strong>line of sight from work to outcome</strong>.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Symptom 06</span>
+        <p>Major <strong>enterprise renewals</strong> upcoming. Competitors marketing AI-ready and cloud-native capabilities. Urgency was high and rising.</p>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top: 2.5rem;">
+      <p>We're doing good work, but it feels like we're flying blind.</p>
+      <cite>— Consistent feedback from engineering and product teams during sprint reviews</cite>
+    </div>
+  </section>
+
+  <!-- THE DIAGNOSIS -->
+  <section class="section fade-in" id="s2">
+    <div class="section-number">02 — The Diagnosis</div>
+    <h2 class="section-heading">The Problem<br>Behind the<br><em>Problem</em></h2>
+    <p class="section-intro">
+      The issue wasn't team capability. It was a missing operating system. Activity was high — alignment was absent. The gap between work and outcomes was invisible, and that invisibility was expensive.
+    </p>
+
+    <div class="contrast-grid">
+      <div class="contrast-col">
+        <span class="contrast-label">What teams were measuring</span>
+        <div class="contrast-item"><span class="contrast-icon">—</span><span>Sprint velocity and completion rates</span></div>
+        <div class="contrast-item"><span class="contrast-icon">—</span><span>Bug counts and ticket closures</span></div>
+        <div class="contrast-item"><span class="contrast-icon">—</span><span>Number of features released</span></div>
+        <div class="contrast-item"><span class="contrast-icon">—</span><span>Release frequency</span></div>
+      </div>
+      <div class="contrast-col after">
+        <span class="contrast-label">What they should have been measuring</span>
+        <div class="contrast-item"><span class="contrast-icon">+</span><span>Diagnostic report turnaround time</span></div>
+        <div class="contrast-item"><span class="contrast-icon">+</span><span>Viewer adoption across care teams</span></div>
+        <div class="contrast-item"><span class="contrast-icon">+</span><span>Revenue retention and renewal rates</span></div>
+        <div class="contrast-item"><span class="contrast-icon">+</span><span>Delivery predictability against commitments</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>The reframe:</strong> This wasn't a prioritization problem or a planning problem. It was a <em>connection problem</em>. Teams couldn't see how their work reached a clinician. Once I named that gap, fixing it became straightforward — not easy, but clear.</p>
+    </div>
+  </section>
+
+  <!-- MY APPROACH -->
+  <section class="section fade-in" id="s3">
+    <div class="section-number">03 — My Approach</div>
+    <h2 class="section-heading">How I<br><em>Fixed It</em></h2>
+    <p class="section-intro">
+      I didn't start with frameworks. I started by listening. Then I built a system that connected every decision to an outcome — without creating bureaucracy.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div>
+          <h4>Diagnosed before prescribing</h4>
+          <p>Sat in on sprint demos, roadmap reviews, and customer calls for two weeks before proposing anything. The pattern was consistent: teams were optimizing locally, no one had a portfolio-level view. That clarity shaped everything that followed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div>
+          <h4>Co-created OKRs anchored to real-world outcomes</h4>
+          <p>Led cross-functional workshops with product, engineering, and clinical leaders to build OKRs from the ground up — not handed down, built together. Every OKR had to pass one test: does this connect to something a clinician or a customer actually experiences?</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div>
+          <h4>Standardized prioritization with RICE across the portfolio</h4>
+          <p>Replaced subjective roadmap debates with a consistent scoring framework. Every initiative evaluated on reach, impact, confidence, and effort — same lens, every team. Trade-offs became explicit and defensible instead of political.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div>
+          <h4>Built a roadmap governance layer in Aha</h4>
+          <p>Every initiative had to declare which OKR it served and which enterprise metric it moved. Built Aha dashboards that gave leadership real-time visibility — not just what was being built, but why and how it connected to portfolio outcomes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <div>
+          <h4>Introduced a bi-weekly release readiness cadence</h4>
+          <p>Replaced ad-hoc release coordination with a structured cadence using clear RACI ownership. Engineering, QA, product, and release ops aligned every two weeks — not at the end of the sprint when surprises had already accumulated.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">06</span>
+        <div>
+          <h4>Embedded analytics into every planning ritual</h4>
+          <p>Integrated Mixpanel and internal telemetry into viewer products. Every planning meeting opened with data — adoption rates, load times, error rates, support ticket patterns. The question shifted from "what should we build?" to "what does the evidence say we should build?"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKR EXAMPLE -->
+    <div class="okr-box fade-in">
+      <span class="okr-box-label">The reframe — OKR example</span>
+      <div class="okr-row">
+        <span class="okr-type">Before — activity-based</span>
+        <div class="okr-old">Objective: Deliver PACS 3.2 release on schedule</div>
+        <div class="okr-old">Key Result: Complete 8 features from the backlog</div>
+      </div>
+      <div class="okr-divider"></div>
+      <div class="okr-row">
+        <span class="okr-type">After — outcome-based</span>
+        <div class="okr-new">Objective: Accelerate clinical decision-making in high-volume radiology environments</div>
+        <div class="okr-new" style="margin-top: 0.5rem; color: var(--muted); font-weight: 300; font-size: 0.85rem;">Key Result: Reduce average diagnostic report turnaround time by 15% across enterprise accounts</div>
+      </div>
+      <div class="okr-divider"></div>
+      <p style="font-size: 0.8rem; color: var(--muted); font-style: italic;">That subtle shift reframed every team conversation from task completion to clinical impact. Engineering could finally answer the question leadership kept asking: "How does this help a radiologist?"</p>
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section class="section fade-in" id="s4">
+    <div class="section-number">04 — Key Decisions</div>
+    <h2 class="section-heading">Where I<br><em>Chose</em></h2>
+
+    <div class="decision">
+      <span class="decision-tag">Decision 01</span>
+      <h4>Listen first, build nothing for two weeks</h4>
+      <p>There was pressure to fix things quickly — the modernization was in motion and renewals were coming. I pushed back and invested two weeks purely in observation. Without that diagnostic phase, I'd have prescribed the wrong treatment. The patterns I found shaped the entire operating model that followed.</p>
+    </div>
+    <div class="decision">
+      <span class="decision-tag">Decision 02</span>
+      <h4>Build OKRs with teams, not for them</h4>
+      <p>I could have rolled out a framework top-down. Instead, I ran workshops where each team proposed their own key results within the portfolio objectives. It was slower, messier, and occasionally uncomfortable — but it produced genuine ownership. Teams didn't just know the OKRs, they believed in them. That's the only kind of OKR that changes behavior.</p>
+    </div>
+    <div class="decision">
+      <span class="decision-tag">Decision 03</span>
+      <h4>Make the OKR workshops about trade-offs, not targets</h4>
+      <p>The most important question in every planning session wasn't "what do we commit to?" — it was "if we commit to this, what do we say no to?" That reframe made teams think seriously about capacity and dependencies. It also reduced mid-quarter surprises because the hard conversations happened upfront.</p>
+    </div>
+    <div class="decision">
+      <span class="decision-tag">Decision 04</span>
+      <h4>Celebrate course-correction, not just delivery</h4>
+      <p>This was a deliberate culture choice. I didn't want teams gaming metrics to look good — I wanted teams that would escalate early when something wasn't working. So I explicitly recognized teams who changed direction based on data, not just those who hit their targets. That shift in what gets celebrated changes what people do when no one's watching.</p>
+    </div>
+    <div class="decision">
+      <span class="decision-tag">Decision 05</span>
+      <h4>Keep the governance lean enough to actually use</h4>
+      <p>Every process I introduced had to earn its place. I killed anything that created overhead without insight. The test: does this help a team member make a better decision, or does it just produce a report for leadership? Anything that only served the latter got cut.</p>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section fade-in" id="s5">
+    <div class="section-number">05 — The Results</div>
+    <h2 class="section-heading">The<br><em>Results</em></h2>
+    <p class="section-intro">Within two quarters, the operating model had transformed. The numbers were meaningful — but the cultural shift was the real outcome.</p>
+
+    <div class="metrics-hero">
+      <div class="metric-block dark">
+        <span class="metric-label">Roadmap predictability</span>
+        <div class="metric-value">+25%</div>
+        <div class="metric-sub">Commitment reliability rose from low-60s to high-70s/low-80s range</div>
+      </div>
+      <div class="metric-block green">
+        <span class="metric-label">Last-minute scope changes</span>
+        <div class="metric-value">–40%</div>
+        <div class="metric-sub">Fewer late surprises as dependencies were surfaced upfront</div>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-sm">
+        <span class="metric-label">Clinician satisfaction</span>
+        <div class="metric-value">+15%</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Modernization timeline</span>
+        <div class="metric-value">+6mo</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Support tickets</span>
+        <div class="metric-value">–30%</div>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top: 2rem;">
+      <div class="card">
+        <span class="card-num">Leadership impact</span>
+        <p>Gained confidence in forecasting — making <strong>budget and client negotiations smoother</strong> and more credible</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Engineering impact</span>
+        <p>Teams started seeing how their code connected to a clinician's workflow — <strong>ownership mindset replaced ticket execution</strong></p>
+      </div>
+      <div class="card">
+        <span class="card-num">Modernization impact</span>
+        <p>Cloud migration <strong>accelerated by six months</strong> because teams were finally making coordinated architectural decisions</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Commercial impact</span>
+        <p>Sales and customer success could <strong>communicate timelines with confidence</strong> — renewals became data-backed conversations</p>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top: 2.5rem;">
+      <p>For the first time, I can see how my work helps a radiologist.</p>
+      <cite>— Engineer, post OKR transformation</cite>
+    </div>
+  </section>
+
+  <!-- WHY IT WORKED -->
+  <section class="section fade-in" id="s6">
+    <div class="section-number">06 — Why It Worked</div>
+    <h2 class="section-heading">Why It<br><em>Worked</em></h2>
+    <p class="section-intro">
+      Operational excellence isn't about control — it's about clarity. When people see the connection between their work and a real outcome, alignment becomes natural.
+    </p>
+
+    <div style="margin-top: 2rem;">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div>
+          <h4>Diagnose before prescribing</h4>
+          <p>Two weeks of listening revealed patterns that two years of retrospectives had missed. The quality of your diagnosis determines the quality of your intervention. Most operational problems are treated before they're understood.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div>
+          <h4>OKRs are an alignment tool, not a reporting artifact</h4>
+          <p>The value of an OKR isn't the document — it's the conversation that produced it. The trade-off discussions, the forced prioritization, the shared language. If your OKRs don't create productive conflict during planning, they're not working.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div>
+          <h4>Connect individual work to end outcomes explicitly</h4>
+          <p>Engineers who can answer "how does my feature help a radiologist?" make different decisions than engineers who can't. That connection doesn't happen on its own — it has to be built deliberately into how work is framed, discussed, and evaluated.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <div>
+          <h4>Governance has to earn its place</h4>
+          <p>Every process should reduce ambiguity or improve decisions — nothing else. The moment a process becomes a box to check, it starts consuming the energy it was meant to generate. I cut anything that served reporting over thinking.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <div>
+          <h4>Culture follows what you celebrate</h4>
+          <p>Teams optimize for whatever gets recognized. Celebrating early escalation and data-driven course correction — not just delivery — fundamentally changed how teams behaved when things went sideways. Which they always do.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFLECTION -->
+  <section class="section fade-in" id="s7">
+    <div class="section-number">07 — Honest Reflection</div>
+    <h2 class="section-heading">What I'd<br><em>Do Differently</em></h2>
+
+    <div class="reflection-grid">
+      <div class="reflection-item">
+        <h4>Involve clinical stakeholders earlier in OKR design</h4>
+        <p>We co-created OKRs with product, engineering, and leadership — but clinical validation came later. Earlier involvement from clinical advisors would have stress-tested the outcome framing and produced even sharper key results from the start.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Instrument the model before rollout, not after</h4>
+        <p>Telemetry and analytics were integrated during rollout rather than before. Having a baseline measurement of what "before" looked like would have made the "after" metrics more defensible and the ROI story cleaner for leadership.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Move faster on manager enablement</h4>
+        <p>The OKR framework worked well at the portfolio level. Where it lagged was at the team level — some engineering managers needed more support translating portfolio OKRs into their sprint planning. I'd invest in that enablement layer earlier.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Document the decision principles, not just the decisions</h4>
+        <p>I documented what we decided but not always why we decided it that way. As teams scaled and new members joined, the absence of documented reasoning made some principles feel like arbitrary rules rather than deliberate choices.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <h2>Want to talk operating<br>models or portfolio strategy?</h2>
+    <p>Available for Lead PM, Director of Product, and fractional engagements.</p>
+    <div class="cta-links">
+      <a href="https://www.linkedin.com/in/rinikothari" target="_blank" class="cta-link primary">Connect on LinkedIn</a>
+      <a href="mailto:rinikothari03@gmail.com" class="cta-link">Send an email</a>
+    </div>
+  </div>
+
+  <!-- CASE NAV -->
+  <div class="case-nav fade-in">
+    <a href="enterprise_viewer_case_study.html">← Case Study 01: Enterprise Viewer</a>
+    <a href="portfolio_home.html">All case studies →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer fade-in">
+    <div class="footer-name">Rini Kothari</div>
+    <div class="footer-right">Portfolio · Confidential · 2026</div>
+  </footer>
+
+</main>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    document.getElementById('progress').style.width = (scrolled / total * 100) + '%';
+    const sections = document.querySelectorAll('[id^="s"]');
+    const dots = document.querySelectorAll('.nav-dot');
+    let current = 0;
+    sections.forEach((s, i) => { if (window.scrollY >= s.offsetTop - 200) current = i; });
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  });
+
+  function scrollTo(i) {
+    const s = document.getElementById('s' + i);
+    if (s) s.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function initObserver() {
+    // Immediately show elements already in view
+    document.querySelectorAll('.fade-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+    // Observe rest for scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => observer.observe(el));
+  }
+  document.addEventListener('DOMContentLoaded', initObserver);
+  // Fallback: show everything after 300ms in case observer misfires
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  }, 300);
+</script>
+</body>
+</html>

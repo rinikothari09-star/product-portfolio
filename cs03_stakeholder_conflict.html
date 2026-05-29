@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study 03 — Rini Kothari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #faf9f7;
+    --muted: #6b6860;
+    --rule: #e2e0db;
+    --accent: #8b3a1a;
+    --accent-soft: #f8f0ec;
+    --warm: #f4f2ee;
+    --dark: #1a0f0a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+    line-height: 1.7; overflow-x: hidden;
+  }
+
+  
+
+  /* CHROME */
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); width: 0%; z-index: 100; transition: width 0.1s linear; }
+  .nav { position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.65rem; z-index: 50; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+  .nav-dot.active { background: var(--accent); transform: scale(1.5); }
+  .nav-dot:hover { background: var(--muted); }
+  .back-nav { position: fixed; top: 1.5rem; left: 2rem; z-index: 100; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+  .back-nav:hover { color: var(--ink); }
+
+  /* LAYOUT */
+  .page { max-width: 720px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* COVER */
+  .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 4rem 0 5rem; border-bottom: 1px solid var(--rule); position: relative; }
+  .cover-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 3rem; }
+  .cover-eyebrow span { color: var(--accent); }
+  .cover-title { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 7vw, 5.2rem); font-weight: 900; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+  .cover-title em { font-style: italic; font-weight: 400; }
+  .cover-sub { font-size: 1rem; color: var(--muted); max-width: 520px; line-height: 1.75; margin-bottom: 3rem; }
+  .cover-meta { display: flex; gap: 3rem; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 2rem; }
+  .cover-meta-item label { display: block; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .cover-meta-item span { font-size: 0.9rem; font-weight: 500; }
+  .scroll-cue { position: absolute; bottom: 2rem; right: 0; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.5rem; }
+  .scroll-cue::before { content: ''; display: block; width: 1px; height: 40px; background: var(--rule); animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.4);opacity:0.4} }
+
+  /* SECTIONS */
+  .section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .section:last-child { border-bottom: none; }
+  .section-number { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+  .section-heading { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 2rem; }
+  .section-heading em { font-style: italic; font-weight: 400; }
+  .section-intro { font-size: 1rem; color: var(--muted); max-width: 560px; margin-bottom: 2.5rem; border-left: 2px solid var(--accent); padding-left: 1.25rem; line-height: 1.75; }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2rem; }
+  .card { background: var(--paper); padding: 1.5rem; }
+  .card-num { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+  .card p { font-size: 0.85rem; line-height: 1.6; }
+
+  /* TENSION BAR — the standoff visualised */
+  .tension-wrap { margin: 3rem 0; }
+  .tension-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .tension-bar { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; }
+  .tension-side { padding: 2rem; }
+  .tension-side.ops { background: var(--ink); color: var(--paper); }
+  .tension-side.biz { background: var(--accent); color: var(--paper); }
+  .tension-mid { background: var(--warm); display: flex; align-items: center; justify-content: center; padding: 1rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .tension-vs { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; color: var(--muted); }
+  .tension-side-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; display: block; opacity: 0.5; }
+  .tension-side h4 { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; line-height: 1.3; }
+  .tension-side p { font-size: 0.8rem; opacity: 0.65; line-height: 1.6; }
+
+  /* QUOTE */
+  .quote-block { background: var(--ink); color: var(--paper); padding: 2.5rem; margin: 2.5rem 0; position: relative; overflow: hidden; }
+  .quote-block::before { content: '\201C'; position: absolute; top: -1rem; left: 1.5rem; font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(255,255,255,0.05); line-height: 1; pointer-events: none; }
+  .quote-block p { font-family: 'Playfair Display', serif; font-size: clamp(1.05rem, 2.2vw, 1.35rem); font-style: italic; font-weight: 400; line-height: 1.55; position: relative; }
+  .quote-block cite { display: block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,249,247,0.35); font-style: normal; }
+
+  /* OPTIONS TABLE */
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2.5rem 0; }
+  .option { padding: 2rem 1.5rem; background: var(--paper); }
+  .option.chosen { background: var(--accent-soft); border-top: 3px solid var(--accent); }
+  .option-num { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block; }
+  .option.chosen .option-num { color: var(--accent); }
+  .option h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 1rem; line-height: 1.3; }
+  .option-row { font-size: 0.78rem; line-height: 1.55; margin-bottom: 0.4rem; color: var(--muted); display: flex; gap: 0.5rem; }
+  .option-row span:first-child { flex-shrink: 0; }
+  .option-badge { display: inline-block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.7rem; background: var(--accent); color: #fff; }
+
+  /* STEPS */
+  .steps { margin-top: 2rem; }
+  .step { display: grid; grid-template-columns: 3rem 1fr; gap: 1.5rem; padding: 1.75rem 0; border-top: 1px solid var(--rule); align-items: start; }
+  .step:last-child { border-bottom: 1px solid var(--rule); }
+  .step-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); padding-top: 0.2rem; }
+  .step h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .step p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* TIMELINE */
+  .timeline { margin: 2.5rem 0; position: relative; padding-left: 2rem; border-left: 2px solid var(--rule); }
+  .timeline-item { padding: 0 0 2rem 1.5rem; position: relative; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot { position: absolute; left: -2.6rem; top: 0.25rem; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--accent); }
+  .timeline-when { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; display: block; }
+  .timeline-item h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.35rem; }
+  .timeline-item p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* METRICS */
+  .metrics-hero { margin: 3rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .metric-block { background: var(--paper); padding: 2.5rem 2rem; }
+  .metric-block.dark { background: var(--ink); color: var(--paper); }
+  .metric-block.terra { background: var(--accent); color: var(--paper); }
+  .metric-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block; }
+  .metric-block.dark .metric-label, .metric-block.terra .metric-label { color: rgba(250,249,247,0.45); }
+  .metric-value { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+  .metric-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+  .metric-block.dark .metric-sub, .metric-block.terra .metric-sub { color: rgba(250,249,247,0.5); }
+  .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-top: none; }
+  .metric-sm { background: var(--warm); padding: 1.5rem; }
+  .metric-sm .metric-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+  .metric-sm .metric-value { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.02em; }
+
+  /* DECISIONS */
+  .decision { padding: 1.75rem 0; border-top: 1px solid var(--rule); }
+  .decision:last-child { border-bottom: 1px solid var(--rule); }
+  .decision-tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+  .decision h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .decision p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* PRINCIPLES */
+  .principle { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.25rem 0; border-top: 1px solid var(--rule); }
+  .principle:last-child { border-bottom: 1px solid var(--rule); }
+  .principle-num { width: 32px; height: 32px; flex-shrink: 0; border: 1px solid var(--rule); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); }
+  .principle h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .principle p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+  /* REFLECTION */
+  .reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+  .reflection-item h4 { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .reflection-item p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+  /* CALLOUT */
+  .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; }
+  .callout p { font-size: 0.87rem; line-height: 1.7; }
+
+  /* CTA / CASE NAV / FOOTER */
+  .cta-section { text-align: center; padding: 5rem 0 3rem; }
+  .cta-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .cta-section p { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; }
+  .cta-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .cta-link { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); text-decoration: none; border: 1px solid var(--ink); padding: 0.85rem 1.75rem; transition: all 0.2s; }
+  .cta-link:hover { background: var(--ink); color: var(--paper); }
+  .cta-link.primary { background: var(--ink); color: var(--paper); }
+  .cta-link.primary:hover { background: var(--dark); border-color: var(--dark); }
+  .case-nav { display: flex; justify-content: space-between; align-items: center; padding: 2.5rem 0; border-top: 1px solid var(--rule); margin-top: 2rem; }
+  .case-nav a { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .case-nav a:hover { color: var(--ink); }
+  .footer { border-top: 1px solid var(--rule); padding: 2rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; }
+  .footer-right { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .metrics-hero, .tension-bar, .options-grid { grid-template-columns: 1fr; }
+    .metrics-row { grid-template-columns: 1fr 1fr; }
+    .reflection-grid { grid-template-columns: 1fr; }
+    .tension-mid { display: none; }
+    .nav, .back-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<a href="portfolio_home.html" class="back-nav">← Portfolio</a>
+
+<nav class="nav">
+  <div class="nav-dot active" onclick="goTo(0)"></div>
+  <div class="nav-dot" onclick="goTo(1)"></div>
+  <div class="nav-dot" onclick="goTo(2)"></div>
+  <div class="nav-dot" onclick="goTo(3)"></div>
+  <div class="nav-dot" onclick="goTo(4)"></div>
+  <div class="nav-dot" onclick="goTo(5)"></div>
+  <div class="nav-dot" onclick="goTo(6)"></div>
+  <div class="nav-dot" onclick="goTo(7)"></div>
+</nav>
+<main class="page">
+
+  <!-- COVER -->
+  <section class="cover" id="s0">
+    <div class="cover-eyebrow fade-in"><span>Case Study 03</span> &nbsp;·&nbsp; Stakeholder Alignment &nbsp;·&nbsp; Commercial Risk</div>
+    <h1 class="cover-title fade-in">
+      20 Customers<br>Blocked. A 4-Month<br><em>Slip. What I Did.</em>
+    </h1>
+    <p class="cover-sub fade-in">
+      Operations refused to support a feature in production without a full GUI. That would have delayed delivery by four months and put 20+ customer go-lives — and significant revenue — at risk. Neither side was wrong. Here's how I resolved it.
+    </p>
+    <div class="cover-meta fade-in">
+      <div class="cover-meta-item"><label>My Role</label><span>Lead Product Manager</span></div>
+      <div class="cover-meta-item"><label>Company</label><span>Optum</span></div>
+      <div class="cover-meta-item"><label>Stakes</label><span>20+ customer go-lives · Quarter revenue</span></div>
+      <div class="cover-meta-item"><label>Conflict type</label><span>Cross-functional standoff</span></div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <!-- THE SITUATION -->
+  <section class="section fade-in" id="s1">
+    <div class="section-number">01 — The Situation</div>
+    <h2 class="section-heading">The<br><em>Standoff</em></h2>
+    <p class="section-intro">
+      I was leading a complex feature spanning three products and their interfaces. It required a new back-end utility to update historical data in the archive. Engineering built it as a CLI tool — clean, functional, appropriate for the scope. Then Operations drew a hard line.
+    </p>
+
+    <div class="tension-wrap">
+      <div class="tension-label">The conflict</div>
+      <div class="tension-bar">
+        <div class="tension-side ops">
+          <span class="tension-side-label">Operations</span>
+          <h4>No GUI, no go-live.</h4>
+          <p>CLI-only means manual configuration, error-prone scripting, and unsustainable support overhead. We won't back this in production.</p>
+        </div>
+        <div class="tension-mid">
+          <div class="tension-vs">vs.</div>
+        </div>
+        <div class="tension-side biz">
+          <span class="tension-side-label">Commercial / Product</span>
+          <h4>A full GUI adds 4 months.</h4>
+          <p>20+ customers are waiting. Contractual commitments are in play. We cannot afford to slip a full release cycle.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top: 0;">
+      <div class="card">
+        <span class="card-num">At stake</span>
+        <p><strong>20+ customer go-lives</strong> blocked — each with commercial milestones tied to this feature</p>
+      </div>
+      <div class="card">
+        <span class="card-num">The risk</span>
+        <p>Slipping a full release cycle would push <strong>revenue recognition</strong> out of the quarter</p>
+      </div>
+      <div class="card">
+        <span class="card-num">The constraint</span>
+        <p>Both sides had valid, <strong>non-negotiable positions</strong> — this wasn't a misunderstanding, it was a genuine trade-off</p>
+      </div>
+      <div class="card">
+        <span class="card-num">The trap</span>
+        <p>Forcing a decision without resolution would leave one team <strong>unsupported in production</strong> or the other holding a broken commercial commitment</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY APPROACH -->
+  <section class="section fade-in" id="s2">
+    <div class="section-number">02 — My Approach</div>
+    <h2 class="section-heading">Reframe<br>Before<br><em>Resolving</em></h2>
+    <p class="section-intro">
+      The first move wasn't to propose a solution. It was to change the question. "GUI or no GUI" was a positional debate. The real question was: what does Operations actually need to feel safe supporting this in production?
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div>
+          <h4>Made the full impact visible to everyone in the same room</h4>
+          <p>I pulled Operations, Services, Engineering, and the Account team into one working session — not separate conversations. Before opening the floor, I shared a single one-page view: number of customers blocked, revenue at risk, GUI build effort vs. current CLI utility. The goal was to reframe this from "Product vs. Ops" to a shared business problem that nobody wanted.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div>
+          <h4>Unpacked the real needs behind Operations' hard line</h4>
+          <p>I asked Operations to walk through their worst-case scenario step by step: where do errors happen, how many customers would need the utility run, what skills does the support team have or lack? What emerged was precise: their concerns weren't about the CLI itself — they were about misconfiguration risk, lack of auditability, and per-customer run time. That reframe changed the problem from "we need a GUI" to "we need safety, repeatability, and low overhead."</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div>
+          <h4>Worked with Engineering to find the minimum viable safety net</h4>
+          <p>Separate from the joint session, I worked with Engineering to identify what could be delivered in four to six weeks that would directly address Operations' real concerns without building a full GUI. We identified four levers: parameter validation and dry-run mode, standardised config templates by customer profile, structured logs ingestible into monitoring tools, and a slim internal console covering the top three use cases only.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div>
+          <h4>Presented three concrete options — not a recommendation in disguise</h4>
+          <p>I brought everyone back with three fully specified scenarios, each with effort, risk, and business impact laid out. The goal was to make the trade-off visible, not to pre-sell an answer. When the options are clear, the right path usually becomes obvious without anyone needing to be convinced.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <div>
+          <h4>De-risked the phased approach specifically for Operations</h4>
+          <p>To get Operations comfortable with Phase 1, I proposed concrete safeguards: pilot with three early adopter customers with white-glove support, require rollback capability on every run, include Operations in the design review for the slim console, and commit to tracking actual effort and error rates in a monthly Ops-Product review. The full GUI was time-boxed into the next major release with firm dates.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">06</span>
+        <div>
+          <h4>Documented the decision and coordinated external messaging</h4>
+          <p>Once alignment was reached, I documented the decision, risks, and mitigation plan and took it to leadership for sign-off. I then worked with the commercial team to prepare customer messaging — setting honest expectations about the initial release scope while confirming the timeline held.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE THREE OPTIONS -->
+  <section class="section fade-in" id="s3">
+    <div class="section-number">03 — The Decision</div>
+    <h2 class="section-heading">Three Options.<br><em>One Path.</em></h2>
+    <p class="section-intro">
+      I never walked into a conflict resolution with one answer. I came with three — fully specified, with trade-offs made explicit. This moved the conversation from debate to decision.
+    </p>
+
+    <div class="options-grid">
+      <div class="option">
+        <span class="option-num">Option A</span>
+        <h4>Full GUI now</h4>
+        <div class="option-row"><span>+</span><span>Ideal Operations experience from day one</span></div>
+        <div class="option-row"><span>+</span><span>No phased rollout complexity</span></div>
+        <div class="option-row"><span>—</span><span>4-month delay to all customer go-lives</span></div>
+        <div class="option-row"><span>—</span><span>Significant revenue slips out of quarter</span></div>
+        <div class="option-row"><span>—</span><span>Engineering capacity consumed by internal tooling</span></div>
+      </div>
+      <div class="option">
+        <span class="option-num">Option B</span>
+        <h4>CLI only, ship now</h4>
+        <div class="option-row"><span>+</span><span>Maintains current timeline</span></div>
+        <div class="option-row"><span>+</span><span>No additional engineering work</span></div>
+        <div class="option-row"><span>—</span><span>High operational risk and manual overhead</span></div>
+        <div class="option-row"><span>—</span><span>Operations cannot support safely at scale</span></div>
+        <div class="option-row"><span>—</span><span>Not acceptable — would create production incidents</span></div>
+      </div>
+      <div class="option chosen">
+        <span class="option-num">Option C</span>
+        <h4>Phased approach</h4>
+        <div class="option-row"><span>+</span><span>Timeline maintained — ~6 weeks from original target</span></div>
+        <div class="option-row"><span>+</span><span>Operations' real concerns addressed directly</span></div>
+        <div class="option-row"><span>+</span><span>Full GUI ships next release with real usage data</span></div>
+        <div class="option-row"><span>+</span><span>Revenue secured in the committed quarter</span></div>
+        <div class="option-row"><span>—</span><span>Requires tight execution and early adopter white-glove</span></div>
+        <div class="option-badge">Chosen</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Phase 1 (3 weeks):</strong> Hardened CLI with parameter validation, dry-run mode, config templates per customer profile, structured logs, and a slim internal console covering the top 3 use cases. Piloted with 3 early adopter customers.</p>
+    </div>
+    <div class="callout" style="margin-top: 0.5rem;">
+      <p><strong>Phase 2 (next major release):</strong> Full GUI incorporating real usage patterns from Phase 1 pilots. Time-boxed with firm dates. Operations included in design reviews throughout.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT PLAYED OUT -->
+  <section class="section fade-in" id="s4">
+    <div class="section-number">04 — How It Played Out</div>
+    <h2 class="section-heading">Week by<br><em>Week</em></h2>
+    <p class="section-intro">
+      The phased approach wasn't just a plan — it was a structured de-risking exercise. Here's how it unfolded.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <span class="timeline-when">Week 1–2</span>
+        <h4>Joint working session + options alignment</h4>
+        <p>Ops, Engineering, Services, and Commercial in one room. One-pager shared. Positions unpacked into needs. Three options presented. Option C agreed. Decision documented and sent to leadership for sign-off.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <span class="timeline-when">Week 3–5</span>
+        <h4>Phase 1 build — hardened CLI + slim console</h4>
+        <p>Engineering delivered parameter validation, dry-run mode, config templates, structured logs, and the slim internal console. Operations reviewed the console design. Three early adopter customers identified and prepped for pilot.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <span class="timeline-when">Week 6</span>
+        <h4>Early adopter pilot with white-glove support</h4>
+        <p>Feature launched to three pilot customers. Support effort per customer tracked. Actual run time and error rate monitored. Findings fed directly into Phase 2 GUI design scope.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <span class="timeline-when">Week 6 onward</span>
+        <h4>20+ customer go-lives unblocked</h4>
+        <p>Feature rolled out to the full waiting customer base. Monthly Ops-Product review established. Phase 2 full GUI scoped and time-boxed into the next major release train.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <span class="timeline-when">Next major release</span>
+        <h4>Phase 2 full GUI ships — better than planned</h4>
+        <p>The full GUI launched with real-world usage patterns from pilot customers informing the design. More focused, better prioritised, and more closely aligned to actual support workflows than the original spec would have been.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section fade-in" id="s5">
+    <div class="section-number">05 — The Results</div>
+    <h2 class="section-heading">The<br><em>Results</em></h2>
+
+    <div class="metrics-hero">
+      <div class="metric-block terra">
+        <span class="metric-label">Delay avoided</span>
+        <div class="metric-value">4 months</div>
+        <div class="metric-sub">Feature delivered ~6 weeks from original target instead of slipping a full release cycle</div>
+      </div>
+      <div class="metric-block dark">
+        <span class="metric-label">Customers unblocked</span>
+        <div class="metric-value">20+</div>
+        <div class="metric-sub">Go-lives secured within the committed quarter, protecting associated revenue</div>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-sm">
+        <span class="metric-label">Production incidents</span>
+        <div class="metric-value">Zero</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Ops support burden</span>
+        <div class="metric-value">Lower</div>
+      </div>
+      <div class="metric-sm">
+        <span class="metric-label">Revenue quarter</span>
+        <div class="metric-value">Held</div>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top: 2rem;">
+      <div class="card">
+        <span class="card-num">Operational outcome</span>
+        <p>Actual support effort per customer <strong>lower than Operations initially feared</strong>. Zero critical incidents during early adopter rollout.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Product outcome</span>
+        <p>Phase 2 full GUI <strong>incorporated real usage data</strong> from pilots — better design, better prioritised controls than the original spec.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Cultural outcome</span>
+        <p>Became an <strong>internal reference model</strong> for cross-functional conflict resolution — reframe positions into needs, quantify trade-offs, co-design a phased path.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Commercial outcome</span>
+        <p>Revenue recognised in the committed quarter. <strong>Customer communications managed cleanly</strong> with no surprise disclosures.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IT WORKED -->
+  <section class="section fade-in" id="s6">
+    <div class="section-number">06 — Why It Worked</div>
+    <h2 class="section-heading">Why It<br><em>Worked</em></h2>
+    <p class="section-intro">
+      The resolution wasn't clever. It was disciplined. These are the principles that made it possible.
+    </p>
+
+    <div style="margin-top: 2rem;">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div>
+          <h4>Positions are symptoms — needs are the diagnosis</h4>
+          <p>"We need a GUI" was a position. The underlying need was safety, repeatability, and low overhead. Resolving the position was impossible. Addressing the need was straightforward. This reframe is the entire skill — and most stakeholder conflicts never get there because nobody asks the second question.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div>
+          <h4>Bring everyone into the same room with the same facts</h4>
+          <p>Bilateral conversations let each side maintain their position. A joint session with shared impact data changed the dynamic — suddenly everyone was looking at the same customer list, the same revenue number, the same engineering estimate. Shared facts create shared accountability.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div>
+          <h4>Options, not recommendations</h4>
+          <p>Walking in with one answer puts you in the position of selling. Walking in with three — fully specified, with trade-offs explicit — puts you in the position of facilitating. The latter is faster and produces more durable alignment because people feel like they chose, not like they were convinced.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <div>
+          <h4>De-risk the path you want — don't just argue for it</h4>
+          <p>I could have presented the phased approach and asked Operations to trust it. Instead, I built the safeguards they needed into the proposal itself — pilots, rollback capability, design involvement, monthly reviews. The ask became: "will you try this?" not "do you believe this will work?"</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <div>
+          <h4>Document and control the narrative</h4>
+          <p>Alignment in a room disappears without documentation. I wrote up the decision, the risks, and the mitigation plan, took it to leadership for sign-off, and then coordinated the external customer messaging. Every step of the resolution was deliberate — including what got communicated to whom and when.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFLECTION -->
+  <section class="section fade-in" id="s7">
+    <div class="section-number">07 — Honest Reflection</div>
+    <h2 class="section-heading">What I'd<br><em>Do Differently</em></h2>
+
+    <div class="reflection-grid">
+      <div class="reflection-item">
+        <h4>Surface the dependency earlier</h4>
+        <p>The Operations concern was foreseeable — any CLI tool running at enterprise scale against production data should have triggered a conversation earlier in the design process. I'd build a pre-launch operations review into the standard feature checklist for anything touching production data.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Quantify the support burden upfront</h4>
+        <p>The impact assessment I prepared for the joint session took time to build under pressure. A standard template for quantifying operational risk — customers affected, run time, skill requirements, error surface — would have made this faster and more reusable across similar decisions.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Pilot structure planned before the conflict, not after</h4>
+        <p>The early adopter pilot was designed reactively as a de-risking mechanism. In hindsight, a structured pilot would have been the right approach regardless — for feature validation, not just stakeholder management. Building it into the launch plan from the start would have been cleaner.</p>
+      </div>
+      <div class="reflection-item">
+        <h4>Convert the resolution into a repeatable playbook sooner</h4>
+        <p>This became an internal reference model informally. I should have written it up as a formal playbook immediately after — while the decisions were fresh. The institutional memory faded faster than it should have as team membership changed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <h2>Want to talk cross-functional<br>alignment or commercial trade-offs?</h2>
+    <p>Available for Lead PM, Director of Product, and fractional engagements.</p>
+    <div class="cta-links">
+      <a href="https://www.linkedin.com/in/rinikothari" target="_blank" class="cta-link primary">Connect on LinkedIn</a>
+      <a href="mailto:rinikothari03@gmail.com" class="cta-link">Send an email</a>
+    </div>
+  </div>
+
+  <!-- CASE NAV -->
+  <div class="case-nav fade-in">
+    <a href="cs02_okr_transformation.html">← Case Study 02: OKR Transformation</a>
+    <a href="portfolio_home.html">All case studies →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer fade-in">
+    <div class="footer-name">Rini Kothari</div>
+    <div class="footer-right">Portfolio · Confidential · 2026</div>
+  </footer>
+
+</main>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    document.getElementById('progress').style.width = (scrolled / total * 100) + '%';
+    const sections = document.querySelectorAll('[id^="s"]');
+    const dots = document.querySelectorAll('.nav-dot');
+    let current = 0;
+    sections.forEach((s, i) => { if (window.scrollY >= s.offsetTop - 200) current = i; });
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  });
+  function goTo(i) { const s = document.getElementById('s' + i); if (s) s.scrollIntoView({ behavior: 'smooth' }); }
+  function initObserver() {
+    // Immediately show elements already in view
+    document.querySelectorAll('.fade-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+    // Observe rest for scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => observer.observe(el));
+  }
+  document.addEventListener('DOMContentLoaded', initObserver);
+  // Fallback: show everything after 300ms in case observer misfires
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  }, 300);
+</script>
+</body>
+</html>

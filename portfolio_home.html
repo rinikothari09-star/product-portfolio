@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rini Kothari — Product Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #faf9f7;
+    --muted: #6b6860;
+    --rule: #e2e0db;
+    --accent: #2a52be;
+    --accent-soft: #eef1fa;
+    --warm: #f4f2ee;
+    --dark: #141312;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .page { max-width: 820px; margin: 0 auto; padding: 0 2.5rem 6rem; }
+
+  /* HEADER */
+  .site-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 2rem 0; border-bottom: 1px solid var(--rule);
+    margin-bottom: 5rem;
+  }
+  .site-header-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .site-header-links {
+    display: flex; gap: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .site-header-links a {
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-header-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero { padding: 2rem 0 5rem; border-bottom: 1px solid var(--rule); }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 2rem;
+  }
+  .hero-label span { color: var(--accent); }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -0.035em; margin-bottom: 2rem;
+  }
+  .hero h1 em { font-style: italic; font-weight: 400; }
+  .hero-bio {
+    max-width: 560px; font-size: 1rem;
+    color: var(--muted); line-height: 1.75;
+    margin-bottom: 3rem;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    border-top: 1px solid var(--rule); padding-top: 2rem;
+  }
+  .hero-stat label {
+    display: block; font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .hero-stat span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em;
+  }
+
+  /* SECTION HEADING */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.03em; margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; font-weight: 400; }
+
+  /* CASE STUDY CARDS */
+  .case-studies { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .cs-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+
+  .cs-card {
+    background: var(--paper); padding: 2.5rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 2rem; align-items: start;
+    cursor: pointer; text-decoration: none; color: inherit;
+    transition: background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .cs-card:hover { background: var(--warm); }
+  .cs-card.featured { background: var(--ink); color: var(--paper); }
+  .cs-card.featured:hover { background: #1e1d1c; }
+
+  .cs-card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.75rem; display: block;
+  }
+  .cs-card.featured .cs-card-tag { color: rgba(250,249,247,0.35); }
+
+  .cs-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.02em; margin-bottom: 0.75rem;
+  }
+  .cs-card-desc {
+    font-size: 0.85rem; color: var(--muted);
+    line-height: 1.65; max-width: 480px;
+  }
+  .cs-card.featured .cs-card-desc { color: rgba(250,249,247,0.5); }
+
+  .cs-card-metrics {
+    display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;
+  }
+  .cs-metric label {
+    display: block; font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.2rem;
+  }
+  .cs-card.featured .cs-metric label { color: rgba(250,249,247,0.35); }
+  .cs-metric span { font-size: 0.95rem; font-weight: 500; }
+
+  .cs-card-arrow {
+    font-size: 1.5rem; color: var(--rule);
+    align-self: center; transition: transform 0.2s, color 0.2s;
+    font-weight: 300;
+  }
+  .cs-card:hover .cs-card-arrow { transform: translateX(4px); color: var(--muted); }
+  .cs-card.featured .cs-card-arrow { color: rgba(250,249,247,0.2); }
+  .cs-card.featured:hover .cs-card-arrow { color: rgba(250,249,247,0.6); }
+
+  .cs-card-badge {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--accent); color: #fff;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .cs-coming {
+    background: var(--warm); opacity: 0.6; cursor: default;
+  }
+  .cs-coming:hover { background: var(--warm); }
+  .cs-coming .cs-card-arrow { display: none; }
+
+  /* PROBLEMS */
+  .problems { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .problems-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin-top: 2.5rem;
+  }
+  .problem-item { background: var(--paper); padding: 2rem; }
+  .problem-item h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.5rem; line-height: 1.4; }
+  .problem-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* EXPERTISE */
+  .expertise { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .exp-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin-top: 2.5rem;
+  }
+  .exp-item { background: var(--paper); padding: 2rem; }
+  .exp-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem; display: block;
+  }
+  .exp-item h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .exp-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* OPERATING PRINCIPLES */
+  .principles { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+  .principle-list { margin-top: 2.5rem; }
+  .principle-item {
+    display: grid; grid-template-columns: 3.5rem 1fr;
+    gap: 1.5rem; padding: 1.75rem 0;
+    border-top: 1px solid var(--rule); align-items: start;
+  }
+  .principle-item:last-child { border-bottom: 1px solid var(--rule); }
+  .principle-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; color: var(--accent); padding-top: 0.2rem;
+  }
+  .principle-item h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .principle-item p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
+  /* METRICS BANNER */
+  .metrics-banner {
+    background: var(--ink); color: var(--paper);
+    padding: 4rem 2.5rem; margin: 5rem 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 3rem;
+  }
+  .banner-metric label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(250,249,247,0.35); display: block; margin-bottom: 0.5rem;
+  }
+  .banner-metric span {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 900; line-height: 1; letter-spacing: -0.03em;
+  }
+  .banner-metric p {
+    font-size: 0.75rem; color: rgba(250,249,247,0.4);
+    margin-top: 0.4rem; line-height: 1.5;
+  }
+
+  /* CONTACT */
+  .contact { padding: 5rem 0 3rem; text-align: center; }
+  .contact h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem;
+  }
+  .contact p { font-size: 0.9rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    display: inline-block; font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    border: 1px solid var(--ink); padding: 0.85rem 1.75rem;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { background: var(--ink); color: var(--paper); }
+  .contact-link.primary { background: var(--ink); color: var(--paper); }
+  .contact-link.primary:hover { background: var(--dark); border-color: var(--dark); }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--rule); padding: 2rem 0;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; }
+  .footer-right {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    .gate-left { display: none; }
+    .gate-right { padding: 2.5rem; }
+    .page { padding: 0 1.5rem 4rem; }
+    .metrics-banner { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+    .cs-card { grid-template-columns: 1fr; }
+    .cs-card-arrow { display: none; }
+    .site-header-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── MAIN PORTFOLIO ── -->
+<main>
+<div class="page">
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="site-header-name">Rini Kothari</div>
+    <nav class="site-header-links">
+      <a href="#case-studies">Case Studies</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#principles">How I Work</a>
+      <a href="#contact">Contact</a>
+      <a href="resume.html">Resume</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-label fade-in">
+      <span>Product Operator</span> &nbsp;·&nbsp; Healthcare &nbsp;·&nbsp; Complex B2B Software
+    </div>
+    <h1 class="fade-in">
+      Product that<br>holds up in<br><em>practice.</em>
+    </h1>
+    <p class="hero-bio fade-in">
+      I'm Rini — a product operator with 10+ years building and scaling enterprise healthcare and B2B software. I work at the intersection of strategy, customer discovery, and execution — translating complex market problems into products that create measurable value and actually get adopted. I've built and scaled enterprise platforms used by 2M+ monthly users across global health systems.
+    </p>
+    <div class="hero-stats fade-in">
+      <div class="hero-stat"><label>Monthly active users</label><span>2M+</span></div>
+      <div class="hero-stat"><label>ARR built</label><span>$3M</span></div>
+      <div class="hero-stat"><label>Years in HealthTech</label><span>10+</span></div>
+      <div class="hero-stat"><label>Discovery interviews</label><span>150+</span></div>
+    </div>
+  </section>
+
+  <!-- PROBLEMS I HELP SOLVE -->
+  <section class="problems fade-in" id="problems">
+    <div class="section-label">Where I Add Value</div>
+    <h2 class="section-title">Problems I<br><em>Help Solve</em></h2>
+
+    <div class="problems-grid">
+      <div class="problem-item">
+        <h4>Roadmaps that aren't translating into execution</h4>
+        <p>Strategy exists on paper but teams are shipping the wrong things — or nothing decisive at all.</p>
+      </div>
+      <div class="problem-item">
+        <h4>Too many priorities and not enough focus</h4>
+        <p>Everything is urgent. Nothing is moving. The team is busy but the outcomes aren't landing.</p>
+      </div>
+      <div class="problem-item">
+        <h4>Misalignment between product, engineering, and leadership</h4>
+        <p>Each function has a different picture of what success looks like and why the work matters.</p>
+      </div>
+      <div class="problem-item">
+        <h4>Teams shipping features without adoption</h4>
+        <p>Products launch but usage doesn't follow. The GTM motion and the product motion are disconnected.</p>
+      </div>
+      <div class="problem-item">
+        <h4>Complex enterprise workflows that need simplification</h4>
+        <p>Multi-stakeholder environments, legacy dependencies, and integration requirements that stall progress.</p>
+      </div>
+      <div class="problem-item">
+        <h4>Decisions stalling under ambiguity</h4>
+        <p>Leadership is waiting for certainty that won't come. Teams need a framework to move with confidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="case-studies fade-in" id="case-studies">
+    <div class="section-label">Case Studies</div>
+    <h2 class="section-title">The Work,<br><em>In Detail</em></h2>
+
+    <div class="cs-list">
+
+      <!-- Case study 1 — live -->
+      <a class="cs-card featured" href="enterprise_viewer_case_study.html">
+        <div class="cs-card-badge">Read now</div>
+        <div>
+          <span class="cs-card-tag">Case Study 01 &nbsp;·&nbsp; 0→1 Build &nbsp;·&nbsp; Enterprise Imaging</span>
+          <div class="cs-card-title">From Five Viewers<br>to One Platform</div>
+          <p class="cs-card-desc">How I built a flagship enterprise imaging viewer from zero — defining the clinical problem, inventing StoryView, and scaling to 2M+ monthly users and $3M ARR in year one.</p>
+          <div class="cs-card-metrics">
+            <div class="cs-metric"><label>MAU</label><span>2M+</span></div>
+            <div class="cs-metric"><label>ARR Y1</label><span>$3M</span></div>
+            <div class="cs-metric"><label>Adoption</label><span>38%</span></div>
+          </div>
+        </div>
+        <div class="cs-card-arrow">→</div>
+      </a>
+
+      <!-- Case study 2 -->
+      <a class="cs-card" href="cs02_okr_transformation.html">
+        <div>
+          <span class="cs-card-tag">Case Study 02 &nbsp;·&nbsp; Operational Excellence &nbsp;·&nbsp; Systems Building</span>
+          <div class="cs-card-title">Building a System That<br>Connects to Outcomes</div>
+          <p class="cs-card-desc">How I transformed a fragmented portfolio operating model into a cohesive, OKR-driven delivery engine — improving roadmap predictability by 25% and accelerating a major cloud modernization by six months.</p>
+          <div class="cs-card-metrics">
+            <div class="cs-metric"><label>Predictability</label><span>+25%</span></div>
+            <div class="cs-metric"><label>Scope churn</label><span>–40%</span></div>
+            <div class="cs-metric"><label>Modernization</label><span>+6mo faster</span></div>
+          </div>
+        </div>
+        <div class="cs-card-arrow">→</div>
+      </a>
+
+      <!-- Case study 3 -->
+      <a class="cs-card" href="cs03_stakeholder_conflict.html">
+        <div>
+          <span class="cs-card-tag">Case Study 03 &nbsp;·&nbsp; Stakeholder Alignment &nbsp;·&nbsp; Commercial Risk</span>
+          <div class="cs-card-title">20 Customers Blocked.<br>A 4-Month Slip. What I Did.</div>
+          <p class="cs-card-desc">Operations refused to support a feature without a full GUI — which would have delayed delivery by four months and put 20+ customer go-lives at risk. How I resolved it without slipping the deadline.</p>
+          <div class="cs-card-metrics">
+            <div class="cs-metric"><label>Delay avoided</label><span>4 months</span></div>
+            <div class="cs-metric"><label>Customers unblocked</label><span>20+</span></div>
+            <div class="cs-metric"><label>Incidents</label><span>Zero</span></div>
+          </div>
+        </div>
+        <div class="cs-card-arrow">→</div>
+      </a>
+
+      <!-- Case study 4 -->
+      <a class="cs-card" href="cs04_exec_priorities.html">
+        <div>
+          <span class="cs-card-tag">Case Study 04 &nbsp;·&nbsp; Executive Alignment &nbsp;·&nbsp; Portfolio Strategy</span>
+          <div class="cs-card-title">When Growth and Cost<br>Reduction Both Win</div>
+          <p class="cs-card-desc">Sales needed innovation to win deals. Operations needed legacy EOL to cut costs. Both priorities were valid — and in direct conflict. How I built a dual-track model that moved both forward simultaneously.</p>
+          <div class="cs-card-metrics">
+            <div class="cs-metric"><label>Tracks running</label><span>Dual</span></div>
+            <div class="cs-metric"><label>Cost savings</label><span>$1.5M</span></div>
+            <div class="cs-metric"><label>Outcome</label><span>Both won</span></div>
+          </div>
+        </div>
+        <div class="cs-card-arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section class="expertise fade-in" id="expertise">
+    <div class="section-label">Areas I Create Value</div>
+    <h2 class="section-title">What I<br><em>Bring</em></h2>
+
+    <div class="exp-grid">
+      <div class="exp-item">
+        <span class="exp-icon">Strategy</span>
+        <h4>Product Strategy</h4>
+        <p>Prioritization under constraint, portfolio-level planning, product bets, make-vs-build decisions, and roadmap sequencing that reflects real business trade-offs — not just stakeholder requests.</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-icon">Discovery</span>
+        <h4>Customer Discovery</h4>
+        <p>150+ structured research interviews. Surfacing hidden needs, separating signal from noise, and validating assumptions before committing engineering resources. Discovery as a diagnostic exercise, not a feature poll.</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-icon">Operations</span>
+        <h4>Product Operations</h4>
+        <p>Planning rhythms, outcome-based goal systems, cross-team alignment, release governance, and execution architecture that connects daily work to business results.</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-icon">Platforms</span>
+        <h4>Enterprise Platforms</h4>
+        <p>Complex multi-stakeholder workflows, third-party integrations, regulated environments, and adoption programs. Deep experience in healthcare; transferable to any domain where enterprise complexity is the norm.</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-icon">Leadership</span>
+        <h4>Cross-functional Leadership</h4>
+        <p>Influencing without authority across engineering, design, clinical, commercial, and operations. Building shared accountability and moving decisions forward in environments where consensus is hard to reach.</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-icon">Commercial</span>
+        <h4>GTM & Portfolio Strategy</h4>
+        <p>Enterprise positioning, premium-tier packaging, executive-level value narratives, and legacy modernization. Treating product as a commercial lever, not just a delivery function.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPERATING PRINCIPLES -->
+  <section class="principles fade-in" id="principles">
+    <div class="section-label">How I Work</div>
+    <h2 class="section-title">Operating<br><em>Principles</em></h2>
+
+    <div class="principle-list">
+      <div class="principle-item">
+        <span class="principle-num">01</span>
+        <div>
+          <h4>Start with the problem behind the problem</h4>
+          <p>Users describe symptoms, not root causes. Real product strategy starts with understanding the cognitive and workflow gaps that produce the symptoms — not with validating solutions people already have in mind. Discovery is a diagnostic exercise, not a feature poll.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-num">02</span>
+        <div>
+          <h4>Clarity is the deliverable</h4>
+          <p>In complex, cross-functional environments, the PM's primary job is to create clarity: on the problem, on the priority, on the decision, on the trade-off. Ambiguity is expensive. I invest heavily in alignment upfront — through written briefs, decision logs, and explicit OKRs — so teams can execute without constant supervision.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-num">03</span>
+        <div>
+          <h4>Influence without authority through shared outcomes</h4>
+          <p>Most meaningful healthcare product work crosses org lines. I align cross-functional teams not through hierarchy but through a shared north-star question: does this help a clinician make a faster, better-informed decision? That question replaces authority as the alignment mechanism.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-num">04</span>
+        <div>
+          <h4>Make trade-offs explicit, not implicit</h4>
+          <p>Every roadmap decision has a cost. Surfacing what we're saying no to — and why — is as important as what we're building. I use structured prioritization (RICE, OKRs, decision principles) to make trade-offs deliberate rather than defaulted into.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-num">05</span>
+        <div>
+          <h4>Build for adoption, not just launch</h4>
+          <p>The GTM motion is part of the product — not a handoff that happens after. I design adoption strategy, sales enablement, and customer rollout programs in parallel with the product itself. That's why the work scales instead of plateauing after launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact fade-in" id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to conversations about product leadership, consulting, advisory, and select full-time opportunities. Remote-first, based in Canada, TN eligible.</p>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/rinikothari" target="_blank" class="contact-link primary">Connect on LinkedIn</a>
+      <a href="mailto:rinikothari03@gmail.com" class="contact-link">Send an email</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name">Rini Kothari</div>
+    <div class="footer-right">Portfolio · 2026</div>
+  </footer>
+
+</div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  });
+</script>
+</body>
+</html>
